@@ -1,4 +1,8 @@
+require('dotenv').config();
+
 const Tesseract = require('tesseract.js');
+const Snoowrap = require('snoowrap');
+const Snoostorm = require('snoostorm');
 
 const input = process.argv[2];
 
