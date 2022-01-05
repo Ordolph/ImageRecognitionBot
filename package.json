@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "snoostorm": "^1.5.2",
+    "snoowrap": "^1.23.0",
+    "tesseract.js": "^2.1.5"
+  }
+}
