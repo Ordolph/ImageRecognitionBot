@@ -3,6 +3,15 @@ const Tesseract = require("tesseract.js");
 const Snoowrap = require("snoowrap");
 const Snoostorm = require("snoostorm");
 
+const ParseImage = function (img) {
+  Tesseract.recognize(img, "eng", { logger: (m) => console.log(m) }).then(
+    ({ data: { text } }) => {
+      console.log(text);
+      return text;
+    }
+  );
+};
+
 // Build Snoowrap and Snoostorm clients
 const r = new Snoowrap({
   userAgent: process.env.USER_AGENT,
@@ -16,25 +25,30 @@ const client = new Snoowrap(r);
 
 //Set options for comment stream
 const streamOpts = {
-  subreddit: "all",
-  limit: 25,
+  subreddit: "BotTestSubreddit1",
+  limit: 1,
 };
 
 //Create comment stream
 const comments = new Snoostorm.CommentStream(client, streamOpts);
 
-//Print comment on reception
-comments.on("item", console.log);
+//Recieve new comment and parse linked image
+let imgLink = "";
 
-// const input = process.argv[2];
+comments.on("end", (end) => {});
 
-// const run = function (input) {
-//   Tesseract.recognize(input, "eng", { logger: (m) => console.log(m) }).then(
-//     ({ data: { text } }) => {
-//       console.log(text);
-//       return text;
-//     }
-//   );
-// };
+const start = function () {
+  comments.on("item", (item) => {
+    console.log(item);
+    if (item.body.toLowerCase().includes("!tweettranscribe_bot")) {
+      console.log("I have been summoned!");
+      imgLink = item.link_url;
+      if (imgLink.includes(".jpg")) {
+        ParseImage(imgLink);
+      }
+    }
+    //comments.end();
+  });
+};
 
-// run(input);
+start();
