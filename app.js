@@ -16,18 +16,15 @@ const client = new Snoowrap(r);
 
 //Set options for comment stream
 const streamOpts = {
-  subreddit: "WhitePeopleTwitter",
-  results: 25,
-  pollingTime: 2000,
+  subreddit: "all",
+  limit: 25,
 };
 
 //Create comment stream
-const comments = new Snoostorm.CommentStream(client, streamOpts)
+const comments = new Snoostorm.CommentStream(client, streamOpts);
 
 //Print comment on reception
-comments.on("comment", (comment) => {
-  console.log(comment);
-});
+comments.on("item", console.log);
 
 // const input = process.argv[2];
 
